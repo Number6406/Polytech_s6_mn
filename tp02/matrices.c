@@ -4,7 +4,7 @@
 #include <limits.h>
 #include <sys/time.h>
 
-
+#define CUBE(X) (X)*(X)*(X)
 /*
  * TP2 - Méthodes Numériques
  * 
@@ -31,7 +31,7 @@ static unsigned long _temps_residuel = 0;
 #define top1() gettimeofday(&_t1, &_tz)
 #define top2() gettimeofday(&_t2, &_tz)
 
-#define ITER   2000
+#define ITER   100000
 
 void init_cpu_time(void)
 {
@@ -60,7 +60,7 @@ void init_matf (matrice_f V, float value) {
   register unsigned int i, j ;
   for (i = 0; i < N; i++)
 	for(j = 0; j < N; j++)
-		V [i][j] = value ;
+		V [i][j] = value+i ;
 }
 
 void init_matd (matrice_d V, double value) {
@@ -75,16 +75,16 @@ void aff_matf (matrice_f V) {
 	register unsigned int i, j ;
 	for (i = 0; i < N; i++){
 		for(j = 0; j < N; j++){
-			printf("|----") ;
+			printf("|-----") ;
 		}
 		printf("|\n");
 		for(j = 0; j < N; j++){
-			printf("|%4.1f",V[i][j]) ;
+			printf("|%5.1f",V[i][j]) ;
 		}
 		printf("|\n");
 	}
 	for(j = 0; j < N; j++){
-		printf("|----") ;
+		printf("|-----") ;
 	}
 	printf("|\n");
 }
@@ -93,16 +93,16 @@ void aff_matd (matrice_d V) {
 	register unsigned int i, j ;
 	for (i = 0; i < N; i++){
 		for(j = 0; j < N; j++){
-			printf("|----") ;
+			printf("|-----") ;
 		}
 		printf("|\n");
 		for(j = 0; j < N; j++){
-			printf("|%4.1f",V[i][j]) ;
+			printf("|%5.1f",V[i][j]) ;
 		}
 		printf("|\n");
 	}
 	for(j = 0; j < N; j++){
-		printf("|----") ;
+		printf("|-----") ;
 	}
 	printf("|\n");
 }
@@ -118,12 +118,14 @@ matrice_f muxLigneF (matrice_f x, matrice_f y) {
 
 void muxColonneF(matrice_f A, matrice_f B, matrice_f C){
 	register unsigned int i, j, k;
+	float somme;
 	for(j = 0; j < N; j++){
 		for(i = 0; i < N; i++){
-			C[i][j]=A[i][0]*B[0][j];
-			for(k=1; k < N; k++){
-				C[i][j]=C[i][j]+A[i][k]*B[k][i];
+			somme = 0;
+			for(k=0; k < N; k++){
+				somme += A[i][k]*B[k][j];
 			}
+			C[i][j]=somme;
 		}
 	}
 	
@@ -134,6 +136,10 @@ matrice_f Af, Bf, Cf;
 matrice_d Ad, Bd, Cd;
 
 int main(void){
+	register unsigned int i;
+	float flops;
+  
+	unsigned long temps ;
 	
 	init_matf(Af,2.0);
 	init_matf(Bf,3.0);
@@ -144,12 +150,20 @@ int main(void){
 	aff_matf(Af);
 	aff_matd(Ad);
 	
-	muxColonneF(Af,Af,Cf);
 	
-	aff_matf(Cf);
+	
+	
 	top1();
-	
+		for(i=0;i<ITER;i++){
+			muxColonneF(Af,Af,Cf);
+		}
 	top2();
+	printf ("Multiplication de deux matrices de réels, par colonnes.\n") ;
+	aff_matf(Cf);
+	temps = cpu_time () ;
+	printf("time = %ld.%03ldms\n", temps/1000, temps%1000);
+	flops = CUBE((float)(N)) / (float)((temps * (1e-6))) * ITER;
+	printf("MFLOPS : %f\n",flops/1e6);
 	
 	return 0;
 }
