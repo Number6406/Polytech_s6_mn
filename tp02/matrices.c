@@ -1,7 +1,24 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 #include <limits.h>
 #include <sys/time.h>
+
+
+/*
+ * TP2 - Méthodes Numériques
+ * 
+ * ABONNENC Alicia
+ * BONHOURE Gilles
+ * RICM3
+ * 
+ * Le but de ce TP est de faire des multiplications sur des matrices.
+ * Pour ce faire trois méthodes devront être employées :
+ * 		- Parcours par lignes
+ * 		- Parcours par colonnes
+ * 		- Calcul par blocs de 32
+ */
+
 
 /* 
    mesure du temps
@@ -38,7 +55,7 @@ unsigned long cpu_time(void) /* retourne des microsecondes */
 typedef float matrice_f[N][N];
 typedef double matrice_d [N][N];
 
-
+// Fonctions d'initialisations de matrices
 void init_matf (matrice_f V, float value) {
   register unsigned int i, j ;
   for (i = 0; i < N; i++)
@@ -53,16 +70,69 @@ void init_matd (matrice_d V, double value) {
 		V [i][j] = value ;
 }
 
-// Fonctions de calcul
-void muxLigneF (matrice_f x, matrice_f y, matrice_f mRes) {
-	register unsigned int i, j;
-	float somme;
-	for(i = 0; j < N; j++) {
-		somme = 0;
-		for (j = 0; j < N; j++) {
-			somme += (x[i][j] * y[j][i]);
+// Fonctions d'affichage de matrices
+void aff_matf (matrice_f V) {
+	register unsigned int i, j ;
+	for (i = 0; i < N; i++){
+		for(j = 0; j < N; j++){
+			printf("----") ;
 		}
-		mRes[i][j] = somme;
+		printf("-\n");
+		for(j = 0; j < N; j++){
+			printf("|%.1f",V[i][j]) ;
+		}
+		printf("|\n");
+	}
+	for(j = 0; j < N; j++){
+		printf("----") ;
+	}
+	printf("-\n");	
+}
+
+void aff_matd (matrice_d V) {
+	register unsigned int i, j ;
+	for (i = 0; i < N; i++){
+		for(j = 0; j < N; j++){
+			printf("----") ;
+		}
+		printf("-\n");
+		for(j = 0; j < N; j++){
+			printf("|%.1f",V[i][j]) ;
+		}
+		printf("|\n");
+	}
+	for(j = 0; j < N; j++){
+		printf("----") ;
+	}
+	printf("-\n");	
+}
+
+// Fonctions de calcul
+void multLigneF (matrice_f x, matrice_f y, matrice_f mRes) {
+	register unsigned int i, j, k;
+	float somme;
+	for(i = 0; i < N; i++) {
+		for (j = 0; j < N; j++) {
+			somme = 0;
+			for(k = 0; k < N; k++) {
+				somme += (x[i][k] * y[k][j]);
+			}
+			mRes[i][j] = somme;
+		}
+	}
+}
+
+void multLigneD (matrice_d x, matrice_d y, matrice_d mRes) {
+	register unsigned int i, j, k;
+	double somme;
+	for(i = 0; i < N; i++) {
+		for (j = 0; j < N; j++) {
+			somme = 0;
+			for(k = 0; k < N; k++) {
+				somme += (x[i][k] * y[k][j]);
+			}
+			mRes[i][j] = somme;
+		}
 	}
 }
 
@@ -76,9 +146,14 @@ int main(void){
 	init_matf(Bf,3.0);
 	init_matf(Cf,0.0);
 	
+	init_matd(Ad,7.0);
+	
+	aff_matf(Af);
+	aff_matd(Ad);
 	top1();
-	muxLigneF(Af,Bf,Cf);
+	multLigneF(Af,Bf,Cf);
 	top2();
+	aff_matf(Cf);
 	
 	return 0;
 }
