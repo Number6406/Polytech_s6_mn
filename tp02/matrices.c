@@ -54,10 +54,16 @@ void init_matd (matrice_d V, double value) {
 }
 
 // Fonctions de calcul
-matrice_f muxLigneF (matrice_f x, matrice_f y) {
+void muxLigneF (matrice_f x, matrice_f y, matrice_f mRes) {
 	register unsigned int i, j;
-	for (i = 0; i < N; i++)
-		for(i = 0; j < N; j++)
+	float somme;
+	for(i = 0; j < N; j++) {
+		somme = 0;
+		for (j = 0; j < N; j++) {
+			somme += (x[i][j] * y[j][i]);
+		}
+		mRes[i][j] = somme;
+	}
 }
 
 // Définition des variables locales
@@ -71,7 +77,7 @@ int main(void){
 	init_matf(Cf,0.0);
 	
 	top1();
-	
+	muxLigneF(Af,Bf,Cf);
 	top2();
 	
 	return 0;
