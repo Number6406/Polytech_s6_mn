@@ -75,36 +75,36 @@ void aff_matf (matrice_f V) {
 	register unsigned int i, j ;
 	for (i = 0; i < N; i++){
 		for(j = 0; j < N; j++){
-			printf("----") ;
+			printf("|----") ;
 		}
-		printf("-\n");
+		printf("|\n");
 		for(j = 0; j < N; j++){
-			printf("|%.1f",V[i][j]) ;
+			printf("|%4.1f",V[i][j]) ;
 		}
 		printf("|\n");
 	}
 	for(j = 0; j < N; j++){
-		printf("----") ;
+		printf("|----") ;
 	}
-	printf("-\n");	
+	printf("|\n");
 }
 
 void aff_matd (matrice_d V) {
 	register unsigned int i, j ;
 	for (i = 0; i < N; i++){
 		for(j = 0; j < N; j++){
-			printf("----") ;
+			printf("|----") ;
 		}
-		printf("-\n");
+		printf("|\n");
 		for(j = 0; j < N; j++){
-			printf("|%.1f",V[i][j]) ;
+			printf("|%4.1f",V[i][j]) ;
 		}
 		printf("|\n");
 	}
 	for(j = 0; j < N; j++){
-		printf("----") ;
+		printf("|----") ;
 	}
-	printf("-\n");	
+	printf("|\n");
 }
 
 // Fonctions de calcul
@@ -115,6 +115,19 @@ matrice_f muxLigneF (matrice_f x, matrice_f y) {
 		for(i = 0; j < N; j++)
 }
 */
+
+void muxColonneF(matrice_f A, matrice_f B, matrice_f C){
+	register unsigned int i, j, k;
+	for(j = 0; j < N; j++){
+		for(i = 0; i < N; i++){
+			C[i][j]=A[i][0]*B[0][j];
+			for(k=1; k < N; k++){
+				C[i][j]=C[i][j]+A[i][k]*B[k][i];
+			}
+		}
+	}
+	
+}
 
 // Définition des variables locales
 matrice_f Af, Bf, Cf;
@@ -130,6 +143,10 @@ int main(void){
 	
 	aff_matf(Af);
 	aff_matd(Ad);
+	
+	muxColonneF(Af,Af,Cf);
+	
+	aff_matf(Cf);
 	top1();
 	
 	top2();
