@@ -1,0 +1,256 @@
+
+N = 100000
+ITER = 100000
+
+# Sans optimisation ni dépassement du cache
+
+Addition float 1 : time = 28050.323ms
+MFLOPS : 356.502112
+Addition float 2 : time = 27335.461ms
+MFLOPS : 365.825184
+Addition double 1 : time = 28458.396ms
+MFLOPS : 351.390144
+Addition double 2 : time = 27805.559ms
+MFLOPS : 359.640320
+Mult float 1 : time = 22464.079ms
+MFLOPS : 445.155136
+Mult float 2 : time = 19161.576ms
+MFLOPS : 521.877792
+Mult double 1 : time = 22674.887ms
+MFLOPS : 441.016544
+Mult double 2 : time = 23987.052ms
+MFLOPS : 416.891552
+Produit scalaire float 1 : time = 23003.803ms
+MFLOPS : 869.421504
+Produit scalaire float 2 : time = 22472.631ms
+MFLOPS : 889.971392
+Produit scalaire double 1 : time = 22493.004ms
+MFLOPS : 889.165312
+Produit scalaire double 2 : time = 21734.967ms
+MFLOPS : 920.176256
+
+# Sans Dépassement du cache, avec -O2
+
+Addition float 1 : time = 1172.488ms
+MFLOPS : 852.887168
+Addition float 2 : time = 958.140ms
+MFLOPS : 1043.688832
+Addition double 1 : time = 1580.879ms
+MFLOPS : 632.559488
+Addition double 2 : time = 1631.900ms
+MFLOPS : 612.782656
+Mult float 1 : time = 1120.230ms
+MFLOPS : 892.673856
+Mult float 2 : time = 763.511ms
+MFLOPS : 1309.738880
+Mult double 1 : time = 1251.455ms
+MFLOPS : 799.069952
+Mult double 2 : time = 1175.331ms
+MFLOPS : 850.824128
+Produit scalaire float 1 : time = 0.000ms
+MFLOPS : inf
+Produit scalaire float 2 : time = 1674.942ms
+MFLOPS : 1194.071168
+Produit scalaire double 1 : time = 0.000ms
+MFLOPS : inf
+Produit scalaire double 2 : time = 1679.928ms
+MFLOPS : 1190.527232
+
+
+# Sans Dépassement du cache, avec -O3
+
+Addition float 1 : time = 6486.877ms
+MFLOPS : 1541.573888
+Addition float 2 : time = 10691.419ms
+MFLOPS : 935.329600
+Addition double 1 : time = 14043.655ms
+MFLOPS : 712.065344
+Addition double 2 : time = 21880.863ms
+MFLOPS : 457.020352
+Mult float 1 : time = 4710.244ms
+MFLOPS : 2123.032192
+Mult float 2 : time = 4663.700ms
+MFLOPS : 2144.220160
+Mult double 1 : time = 9460.831ms
+MFLOPS : 1056.989632
+Mult double 2 : time = 16368.813ms
+MFLOPS : 610.917888
+Produit scalaire float 1 : time = 0.000ms
+MFLOPS : inf
+Produit scalaire float 2 : time = 0.000ms
+MFLOPS : inf
+Produit scalaire double 1 : time = 0.000ms
+MFLOPS : inf
+Produit scalaire double 2 : time = 0.001ms
+MFLOPS : 20000000545.128448
+
+N = 400 000
+ITER = 1000
+
+# Dépassement double, sans optimisation
+
+Addition float 1 : time = 2444.789ms
+MFLOPS : 327.226624
+Addition float 2 : time = 2237.275ms
+MFLOPS : 357.577888
+Addition double 1 : time = 2687.271ms
+MFLOPS : 297.699776
+Addition double 2 : time = 2708.426ms
+MFLOPS : 295.374496
+Mult float 1 : time = 1862.449ms
+MFLOPS : 429.541952
+Mult float 2 : time = 1644.997ms
+MFLOPS : 486.323072
+Mult double 1 : time = 2005.530ms
+MFLOPS : 398.897024
+Mult double 2 : time = 2067.025ms
+MFLOPS : 387.029696
+Produit scalaire float 1 : time = 1891.990ms
+MFLOPS : 845.670464
+Produit scalaire float 2 : time = 1838.202ms
+MFLOPS : 870.415744
+Produit scalaire double 1 : time = 1918.345ms
+MFLOPS : 834.052224
+Produit scalaire double 2 : time = 1832.527ms
+MFLOPS : 873.111232
+
+# Dépassement double, optimisation -O2
+
+Addition float 1 : time = 1056.623ms
+MFLOPS : 757.129088
+Addition float 2 : time = 1078.066ms
+MFLOPS : 742.069632
+Addition double 1 : time = 2554.897ms
+MFLOPS : 313.124160
+Addition double 2 : time = 2547.280ms
+MFLOPS : 314.060480
+Mult float 1 : time = 917.001ms
+MFLOPS : 872.409088
+Mult float 2 : time = 653.401ms
+MFLOPS : 1224.363008
+Mult double 1 : time = 1842.750ms
+MFLOPS : 434.133792
+Mult double 2 : time = 1800.630ms
+MFLOPS : 444.288928
+Produit scalaire float 1 : time = 0.001ms
+MFLOPS : 1600000006.029312
+Produit scalaire float 2 : time = 1362.269ms
+MFLOPS : 1174.510976
+Produit scalaire double 1 : time = 0.001ms
+MFLOPS : 1600000006.029312
+Produit scalaire double 2 : time = 1417.748ms
+MFLOPS : 1128.550400
+
+# Dépassement double, optimisation -O3
+
+Addition float 1 : time = 893.425ms
+MFLOPS : 895.430528
+Addition float 2 : time = 880.168ms
+MFLOPS : 908.917376
+Addition double 1 : time = 2488.983ms
+MFLOPS : 321.416448
+Addition double 2 : time = 2653.271ms
+MFLOPS : 301.514624
+Mult float 1 : time = 500.493ms
+MFLOPS : 1598.424064
+Mult float 2 : time = 490.937ms
+MFLOPS : 1629.537024
+Mult double 1 : time = 1723.607ms
+MFLOPS : 464.142944
+Mult double 2 : time = 1831.476ms
+MFLOPS : 436.806144
+Produit scalaire float 1 : time = 0.000ms
+MFLOPS : inf
+Produit scalaire float 2 : time = 0.000ms
+MFLOPS : inf
+Produit scalaire double 1 : time = 0.000ms
+MFLOPS : inf
+Produit scalaire double 2 : time = 0.000ms
+MFLOPS : inf
+
+N = 800000
+ITER = 1000
+
+# Dépassement float, sans optimisation
+
+Addition float 1 : time = 4758.818ms
+MFLOPS : 336.217952
+Addition float 2 : time = 4680.907ms
+MFLOPS : 341.814112
+Addition double 1 : time = 5512.331ms
+MFLOPS : 290.258336
+Addition double 2 : time = 5450.463ms
+MFLOPS : 293.553056
+Mult float 1 : time = 3738.657ms
+MFLOPS : 427.961152
+Mult float 2 : time = 3225.528ms
+MFLOPS : 496.042816
+Mult double 1 : time = 4381.626ms
+MFLOPS : 365.161216
+Mult double 2 : time = 4370.373ms
+MFLOPS : 366.101504
+Produit scalaire float 1 : time = 3723.877ms
+MFLOPS : 859.319488
+Produit scalaire float 2 : time = 3740.085ms
+MFLOPS : 855.595584
+Produit scalaire double 1 : time = 3800.639ms
+MFLOPS : 841.963712
+Produit scalaire double 2 : time = 3992.662ms
+MFLOPS : 801.470336
+
+
+# Dépassement float, optimisation -O2
+
+Addition float 1 : time = 2694.536ms
+MFLOPS : 593.794240
+Addition float 2 : time = 2681.081ms
+MFLOPS : 596.774208
+Addition double 1 : time = 5375.623ms
+MFLOPS : 297.639904
+Addition double 2 : time = 5439.141ms
+MFLOPS : 294.164096
+Mult float 1 : time = 2246.806ms
+MFLOPS : 712.122048
+Mult float 2 : time = 2109.676ms
+MFLOPS : 758.410304
+Mult double 1 : time = 4055.603ms
+MFLOPS : 394.515936
+Mult double 2 : time = 3990.450ms
+MFLOPS : 400.957280
+Produit scalaire float 1 : time = 0.000ms
+MFLOPS : inf
+Produit scalaire float 2 : time = 2751.880ms
+MFLOPS : 1162.841344
+Produit scalaire double 1 : time = 0.001ms
+MFLOPS : 3200000012.058624
+Produit scalaire double 2 : time = 3195.467ms
+MFLOPS : 1001.418560
+
+# Dépassement float, optimisation -O3
+
+Addition float 1 : time = 2860.460ms
+MFLOPS : 559.350592
+Addition float 2 : time = 2751.155ms
+MFLOPS : 581.573952
+Addition double 1 : time = 5506.339ms
+MFLOPS : 290.574176
+Addition double 2 : time = 5324.007ms
+MFLOPS : 300.525536
+Mult float 1 : time = 1790.275ms
+MFLOPS : 893.717440
+Mult float 2 : time = 1777.474ms
+MFLOPS : 900.153792
+Mult double 1 : time = 3945.003ms
+MFLOPS : 405.576384
+Mult double 2 : time = 4068.077ms
+MFLOPS : 393.306208
+Produit scalaire float 1 : time = 0.000ms
+MFLOPS : inf
+Produit scalaire float 2 : time = 0.000ms
+MFLOPS : inf
+Produit scalaire double 1 : time = 0.000ms
+MFLOPS : inf
+Produit scalaire double 2 : time = 0.000ms
+MFLOPS : inf
+
+

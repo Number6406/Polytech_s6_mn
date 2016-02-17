@@ -1,0 +1,32 @@
+programmation C
+
+int main (int argc, char *argv[])
+
+typedef float Vectfloat[SIZE]
+typedef double Vectdouble[SIZE]
+
+# -> traité par le préprocesseur
+
+
+calculs vectoriels
+
+calculs de flops par secondes
+nb d'opérations flottantes effectuées / temps
+
+dépassement cache !
+
+lstopo
+
+
+float : 4 o
+double : 8 o
+mémoire cache L3 : 3072 KB
+
+nombre de données nécessaires pour dépasser le cache :
+
+float : 768,000 = 3072000 / 4
+double : 384,000 = 3072000 / 8
+
+
+float flops;
+flops = (float)(2.0 * N) / (float)((temps * (1e-6))) * ITER
