@@ -108,13 +108,33 @@ void aff_matd (matrice_d V) {
 }
 
 // Fonctions de calcul
-/*
-matrice_f muxLigneF (matrice_f x, matrice_f y) {
-	register unsigned int i, j;
-	for (i = 0; i < N; i++)
-		for(i = 0; j < N; j++)
+void multLigneF (matrice_f x, matrice_f y, matrice_f mRes) {
+	register unsigned int i, j, k;
+	float somme;
+	for(i = 0; i < N; i++) {
+		for (j = 0; j < N; j++) {
+			somme = 0;
+			for(k = 0; k < N; k++) {
+				somme += (x[i][k] * y[k][j]);
+			}
+			mRes[i][j] = somme;
+		}
+	}
 }
-*/
+
+void multLigneD (matrice_d x, matrice_d y, matrice_d mRes) {
+	register unsigned int i, j, k;
+	double somme;
+	for(i = 0; i < N; i++) {
+		for (j = 0; j < N; j++) {
+			somme = 0;
+			for(k = 0; k < N; k++) {
+				somme += (x[i][k] * y[k][j]);
+			}
+			mRes[i][j] = somme;
+		}
+	}
+}
 
 void muxColonneF(matrice_f A, matrice_f B, matrice_f C){
 	register unsigned int i, j, k;
@@ -151,8 +171,6 @@ int main(void){
 	aff_matd(Ad);
 	
 	
-	
-	
 	top1();
 		for(i=0;i<ITER;i++){
 			muxColonneF(Af,Af,Cf);
@@ -164,6 +182,7 @@ int main(void){
 	printf("time = %ld.%03ldms\n", temps/1000, temps%1000);
 	flops = CUBE((float)(N)) / (float)((temps * (1e-6))) * ITER;
 	printf("MFLOPS : %f\n",flops/1e6);
+
 	
 	return 0;
 }
