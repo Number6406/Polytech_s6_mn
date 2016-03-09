@@ -124,6 +124,22 @@ void multLigneF (matrice_f x, matrice_f y, matrice_f mRes) {
 	}
 }
 
+void multLigneF_OMP (matrice_f x, matrice_f y, matrice_f mRes) {
+	register unsigned int i, j, k;
+	float somme;
+	
+	#pragma omp parallel for private(i,j,k)
+	for(i = 0; i < N; i++) {
+		for (j = 0; j < N; j++) {
+			somme = 0;
+			for(k = 0; k < N; k++) {
+				somme += (x[i][k] * y[k][j]);
+			}
+			mRes[i][j] = somme;
+		}
+	}
+}
+
 void multLigneD (matrice_d x, matrice_d y, matrice_d mRes) {
 	register unsigned int i, j, k;
 	double somme;
@@ -140,6 +156,20 @@ void multLigneD (matrice_d x, matrice_d y, matrice_d mRes) {
 
 void muxColonneF(matrice_f A, matrice_f B, matrice_f C){
 	register unsigned int i, j, k;
+	for(j = 0; j < N; j++){
+		for(i = 0; i < N; i++){
+			for(k=0; k < N; k++){
+				C[i][j]=C[i][j]+A[i][k]*B[k][i];
+			}
+		}
+	}
+	
+}
+
+void muxColonneF_OMP(matrice_f A, matrice_f B, matrice_f C){
+	register unsigned int i, j, k;
+	
+	#pragma omp parallel for private(i,j,k)
 	for(j = 0; j < N; j++){
 		for(i = 0; i < N; i++){
 			for(k=0; k < N; k++){
@@ -219,6 +249,17 @@ int main(void){
 	flops = (float)(2*pow(N,3)) / (float)(temps * (1e-6)) *ITER;
 	printf("MFLOPS : %f\n",flops/1e6);
 	
+	printf("Multiplication OMP | Lignes de la matrice de sortie\n");
+	top1();
+	for(i=0; i< ITER; i++)
+		multLigneF_OMP(Af,Bf,Cf);
+	top2();
+	//aff_matf(Cf);
+	temps = cpu_time();
+	printf("time = %ld.%03ldms\n", temps/1000, temps%1000);
+	flops = (float)(2*pow(N,3)) / (float)(temps * (1e-6)) *ITER;
+	printf("MFLOPS : %f\n",flops/1e6);
+	
 	printf("Multiplication | Colonnes de la matrice de sortie\n");
 	top1();
 	for(i=0; i< ITER; i++)
@@ -229,10 +270,31 @@ int main(void){
 	flops = (float)(2*pow(N,3)) / (float)(temps * (1e-6)) *ITER;
 	printf("MFLOPS : %f\n",flops/1e6);
 	
+	printf("Multiplication OMP | Colonnes de la matrice de sortie\n");
+	top1();
+	for(i=0; i< ITER; i++)
+		muxColonneF_OMP(Af,Af,Cf);
+	top2();
+	temps = cpu_time();
+	printf("time = %ld.%03ldms\n", temps/1000, temps%1000);
+	flops = (float)(2*pow(N,3)) / (float)(temps * (1e-6)) *ITER;
+	printf("MFLOPS : %f\n",flops/1e6);
+	
 	printf("Multiplication | Par blocs de %d valeurs de la matrice de sortie\n",BLOC);
 	top1();
 	for(i=0; i< ITER; i++)
 		multBlocF(Af,Bf,Cf);
+	top2();
+	//aff_matf(Cf);
+	temps = cpu_time();
+	printf("time = %ld.%03ldms\n", temps/1000, temps%1000);
+	flops = (float)(2*pow(N,3)) / (float)(temps * (1e-6)) *ITER;
+	printf("MFLOPS : %f\n",flops/1e6);
+	
+	printf("Multiplication OMP | Par blocs de %d valeurs de la matrice de sortie\n",BLOC);
+	top1();
+	for(i=0; i< ITER; i++)
+		multBlocF_OMP(Af,Bf,Cf);
 	top2();
 	//aff_matf(Cf);
 	temps = cpu_time();
