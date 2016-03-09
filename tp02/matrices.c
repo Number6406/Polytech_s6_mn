@@ -264,7 +264,7 @@ int main(void){
 	
 	printf("Calculs sur %d matrices de dimension %d :\n", ITER, N);
 	
-	
+	printf("// MULTIPLICATIONS //\n");
 	/* Affichage du temps et des MFLOPS pour différents types d'opérations */
 	printf("Multiplication | Lignes de la matrice de sortie\n");
 	
@@ -336,6 +336,18 @@ int main(void){
 	
 	printf("time = %ld.%03ldms\n", temps/1000, temps%1000);
 	flops = (float)(2*CUBE(N)) / (float)(temps * (1e-6)) *ITER;
+	printf("MFLOPS : %f\n",flops/1e6);
+	
+	
+	printf("// SOMME //\n");
+	top1();
+	for(i=0; i< ITER; i++)
+		sommeF(Af,Bf,Cf);
+	top2();
+	temps = cpu_time();
+	
+	printf("time = %ld.%03ldms\n", temps/1000, temps%1000);
+	flops = (float)((N)*(N)) / (float)(temps * (1e-6)) *ITER;
 	printf("MFLOPS : %f\n",flops/1e6);
 	
 	return 0;
