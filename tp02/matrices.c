@@ -32,7 +32,7 @@ unsigned long temps ;
 #define top1() gettimeofday(&_t1, &_tz)
 #define top2() gettimeofday(&_t2, &_tz)
 
-#define ITER   10
+#define ITER   20
 
 void init_cpu_time(void)
 {
@@ -51,7 +51,7 @@ unsigned long cpu_time(void) /* retourne des microsecondes */
 	Définition des matrices
  */
 
-#define N 800
+#define N 400
 #define BLOC 32
 
 typedef float matrice_f[N][N];
@@ -110,6 +110,9 @@ void aff_matd (matrice_d V) {
 }
 
 // Fonctions de calcul
+/**
+ * Multiplications par les lignes
+ */
 void multLigneF (matrice_f x, matrice_f y, matrice_f mRes) {
 	register unsigned int i, j, k;
 	float somme;
@@ -154,17 +157,17 @@ void multLigneD (matrice_d x, matrice_d y, matrice_d mRes) {
 	}
 }
 
+/**
+ * Multiplication par les colonnes
+ */
 void muxColonneF(matrice_f A, matrice_f B, matrice_f C){
 	register unsigned int i, j, k;
-	float somme;
+	
 	for(j = 0; j < N; j++){
 		for(i = 0; i < N; i++){
-			
-			somme = 0;
 			for(k=0; k < N; k++){
-				somme += A[i][k]*B[k][j];
+				C[i][j]=C[i][j]+A[i][k]*B[k][i];
 			}
-			C[i][j]=somme;
 		}
 	}
 	
@@ -184,6 +187,9 @@ void muxColonneF_OMP(matrice_f A, matrice_f B, matrice_f C){
 	
 }
 
+/**
+ * Multiplication par blocs
+ */
 void multBlocF(matrice_f A, matrice_f B, matrice_f C) {
 	int block_i, block_j, local_i, local_j, k;
 	float somme;
@@ -222,6 +228,18 @@ void multBlocF_OMP(matrice_f A, matrice_f B, matrice_f C) {
 	}
 }
 
+/**
+ * Somme de matrices
+ */
+void sommeF(matrice_f A, matrice_f B, matrice_f C){
+	int i,j;
+	for(i=0;i<N;i++){
+		for(j=0;j<N;j++){
+			C[i][j] = A[i][j] + B[i][j];
+		}
+	}
+}
+
 // Définition des variables locales
 matrice_f Af, Bf, Cf;
 matrice_d Ad, Bd, Cd;
@@ -244,29 +262,34 @@ int main(void){
 	//aff_matd(Ad);
 	//aff_matf(Cf);
 	
-	printf("Calculs sur %d matrices de dimenssion %d :\n", ITER, N);
+	printf("Calculs sur %d matrices de dimension %d :\n", ITER, N);
 	
+	printf("// MULTIPLICATIONS //\n");
+	/* Affichage du temps et des MFLOPS pour différents types d'opérations */
 	printf("Multiplication | Lignes de la matrice de sortie\n");
+	
 	top1();
 	for(i=0; i< ITER; i++)
 		multLigneF(Af,Bf,Cf);
 	top2();
-	//aff_matf(Cf);
 	temps = cpu_time();
+	
 	printf("time = %ld.%03ldms\n", temps/1000, temps%1000);
 	flops = (float)(2*CUBE(N)) / (float)(temps * (1e-6)) *ITER;
 	printf("MFLOPS : %f\n",flops/1e6);
+
 
 	printf("Multiplication OMP | Lignes de la matrice de sortie\n");
 	top1();
 	for(i=0; i< ITER; i++)
 		multLigneF_OMP(Af,Bf,Cf);
 	top2();
-	//aff_matf(Cf);
 	temps = cpu_time();
+	
 	printf("time = %ld.%03ldms\n", temps/1000, temps%1000);
 	flops = (float)(2*CUBE(N)) / (float)(temps * (1e-6)) *ITER;
 	printf("MFLOPS : %f\n",flops/1e6);
+	
 	
 	printf("Multiplication | Colonnes de la matrice de sortie\n");
 	top1();
@@ -274,40 +297,57 @@ int main(void){
 		muxColonneF(Af,Af,Cf);
 	top2();
 	temps = cpu_time();
+	
 	printf("time = %ld.%03ldms\n", temps/1000, temps%1000);
 	flops = (float)(2*CUBE(N)) / (float)(temps * (1e-6)) *ITER;
 	printf("MFLOPS : %f\n",flops/1e6);
 	
+	
 	printf("Multiplication OMP | Colonnes de la matrice de sortie\n");
-	top1();
+	top1(); 
 	for(i=0; i< ITER; i++)
 		muxColonneF_OMP(Af,Af,Cf);
 	top2();
 	temps = cpu_time();
+	
 	printf("time = %ld.%03ldms\n", temps/1000, temps%1000);
 	flops = (float)(2*CUBE(N)) / (float)(temps * (1e-6)) *ITER;
 	printf("MFLOPS : %f\n",flops/1e6);
+	
 	
 	printf("Multiplication | Par blocs de %d valeurs de la matrice de sortie\n",BLOC);
 	top1();
 	for(i=0; i< ITER; i++)
 		multBlocF(Af,Bf,Cf);
 	top2();
-	//aff_matf(Cf);
 	temps = cpu_time();
+	
 	printf("time = %ld.%03ldms\n", temps/1000, temps%1000);
 	flops = (float)(2*CUBE(N)) / (float)(temps * (1e-6)) *ITER;
 	printf("MFLOPS : %f\n",flops/1e6);
+	
 	
 	printf("Multiplication OMP | Par blocs de %d valeurs de la matrice de sortie\n",BLOC);
 	top1();
 	for(i=0; i< ITER; i++)
 		multBlocF_OMP(Af,Bf,Cf);
 	top2();
-	//aff_matf(Cf);
 	temps = cpu_time();
+	
 	printf("time = %ld.%03ldms\n", temps/1000, temps%1000);
 	flops = (float)(2*CUBE(N)) / (float)(temps * (1e-6)) *ITER;
+	printf("MFLOPS : %f\n",flops/1e6);
+	
+	
+	printf("// SOMME //\n");
+	top1();
+	for(i=0; i< ITER; i++)
+		sommeF(Af,Bf,Cf);
+	top2();
+	temps = cpu_time();
+	
+	printf("time = %ld.%03ldms\n", temps/1000, temps%1000);
+	flops = (float)((N)*(N)) / (float)(temps * (1e-6)) *ITER;
 	printf("MFLOPS : %f\n",flops/1e6);
 	
 	return 0;
