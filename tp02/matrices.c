@@ -4,7 +4,7 @@
 #include <limits.h>
 #include <sys/time.h>
 
-
+#define CUBE(X) (X)*(X)*(X)
 /*
  * TP2 - Méthodes Numériques
  * 
@@ -62,7 +62,7 @@ void init_matf (matrice_f V, float value) {
   register unsigned int i, j ;
   for (i = 0; i < N; i++)
 	for(j = 0; j < N; j++)
-		V [i][j] = value ;
+		V [i][j] = value+i ;
 }
 
 void init_matd (matrice_d V, double value) {
@@ -77,16 +77,16 @@ void aff_matf (matrice_f V) {
 	register unsigned int i, j ;
 	for (i = 0; i < N; i++){
 		for(j = 0; j < N; j++){
-			printf("|----") ;
+			printf("|-----") ;
 		}
 		printf("|\n");
 		for(j = 0; j < N; j++){
-			printf("|%4.1f",V[i][j]) ;
+			printf("|%5.1f",V[i][j]) ;
 		}
 		printf("|\n");
 	}
 	for(j = 0; j < N; j++){
-		printf("|----") ;
+		printf("|-----") ;
 	}
 	printf("|\n");
 }
@@ -95,16 +95,16 @@ void aff_matd (matrice_d V) {
 	register unsigned int i, j ;
 	for (i = 0; i < N; i++){
 		for(j = 0; j < N; j++){
-			printf("|----") ;
+			printf("|-----") ;
 		}
 		printf("|\n");
 		for(j = 0; j < N; j++){
-			printf("|%4.1f",V[i][j]) ;
+			printf("|%5.1f",V[i][j]) ;
 		}
 		printf("|\n");
 	}
 	for(j = 0; j < N; j++){
-		printf("|----") ;
+		printf("|-----") ;
 	}
 	printf("|\n");
 }
@@ -156,11 +156,15 @@ void multLigneD (matrice_d x, matrice_d y, matrice_d mRes) {
 
 void muxColonneF(matrice_f A, matrice_f B, matrice_f C){
 	register unsigned int i, j, k;
+	float somme;
 	for(j = 0; j < N; j++){
 		for(i = 0; i < N; i++){
+			
+			somme = 0;
 			for(k=0; k < N; k++){
-				C[i][j]=C[i][j]+A[i][k]*B[k][i];
+				somme += A[i][k]*B[k][j];
 			}
+			C[i][j]=somme;
 		}
 	}
 	
@@ -224,7 +228,11 @@ matrice_d Ad, Bd, Cd;
 float flops;
 
 int main(void){
-	int i;
+
+	register unsigned int i;
+	float flops;
+  
+	unsigned long temps ;
 	
 	init_matf(Af,2.0);
 	init_matf(Bf,3.0);
@@ -246,9 +254,9 @@ int main(void){
 	//aff_matf(Cf);
 	temps = cpu_time();
 	printf("time = %ld.%03ldms\n", temps/1000, temps%1000);
-	flops = (float)(2*pow(N,3)) / (float)(temps * (1e-6)) *ITER;
+	flops = (float)(2*CUBE(N)) / (float)(temps * (1e-6)) *ITER;
 	printf("MFLOPS : %f\n",flops/1e6);
-	
+
 	printf("Multiplication OMP | Lignes de la matrice de sortie\n");
 	top1();
 	for(i=0; i< ITER; i++)
@@ -257,7 +265,7 @@ int main(void){
 	//aff_matf(Cf);
 	temps = cpu_time();
 	printf("time = %ld.%03ldms\n", temps/1000, temps%1000);
-	flops = (float)(2*pow(N,3)) / (float)(temps * (1e-6)) *ITER;
+	flops = (float)(2*CUBE(N)) / (float)(temps * (1e-6)) *ITER;
 	printf("MFLOPS : %f\n",flops/1e6);
 	
 	printf("Multiplication | Colonnes de la matrice de sortie\n");
@@ -267,7 +275,7 @@ int main(void){
 	top2();
 	temps = cpu_time();
 	printf("time = %ld.%03ldms\n", temps/1000, temps%1000);
-	flops = (float)(2*pow(N,3)) / (float)(temps * (1e-6)) *ITER;
+	flops = (float)(2*CUBE(N)) / (float)(temps * (1e-6)) *ITER;
 	printf("MFLOPS : %f\n",flops/1e6);
 	
 	printf("Multiplication OMP | Colonnes de la matrice de sortie\n");
@@ -277,7 +285,7 @@ int main(void){
 	top2();
 	temps = cpu_time();
 	printf("time = %ld.%03ldms\n", temps/1000, temps%1000);
-	flops = (float)(2*pow(N,3)) / (float)(temps * (1e-6)) *ITER;
+	flops = (float)(2*CUBE(N)) / (float)(temps * (1e-6)) *ITER;
 	printf("MFLOPS : %f\n",flops/1e6);
 	
 	printf("Multiplication | Par blocs de %d valeurs de la matrice de sortie\n",BLOC);
@@ -288,7 +296,7 @@ int main(void){
 	//aff_matf(Cf);
 	temps = cpu_time();
 	printf("time = %ld.%03ldms\n", temps/1000, temps%1000);
-	flops = (float)(2*pow(N,3)) / (float)(temps * (1e-6)) *ITER;
+	flops = (float)(2*CUBE(N)) / (float)(temps * (1e-6)) *ITER;
 	printf("MFLOPS : %f\n",flops/1e6);
 	
 	printf("Multiplication OMP | Par blocs de %d valeurs de la matrice de sortie\n",BLOC);
@@ -299,7 +307,7 @@ int main(void){
 	//aff_matf(Cf);
 	temps = cpu_time();
 	printf("time = %ld.%03ldms\n", temps/1000, temps%1000);
-	flops = (float)(2*pow(N,3)) / (float)(temps * (1e-6)) *ITER;
+	flops = (float)(2*CUBE(N)) / (float)(temps * (1e-6)) *ITER;
 	printf("MFLOPS : %f\n",flops/1e6);
 	
 	return 0;
