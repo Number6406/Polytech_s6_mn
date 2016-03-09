@@ -75,7 +75,7 @@ void init_matd (matrice_d V, double value) {
 }
 
 // Fonction d'initialisation des vecteurs
-void init_vect (vectfloat_t V, float value) {
+void init_vect (vect_f V, float value) {
   register unsigned int i ;
   for (i = 0; i < N; i++)
     V [i] = value ;
@@ -266,12 +266,19 @@ void sommeF(matrice_f A, matrice_f B, matrice_f C){
  * Multiplication MATRICExVECTEUR
  */
  void multVect(matrice_f A, vect_f V, vect_f Res){
-	 
+	unsigned int i,j;
+	for(i=0;i<N;i++){
+		Res[i]=0;
+		for(j=0;j<N;j++){
+			Res[i] += A[i][j]*V[j];
+		}
+	}
  }
 
 // Définition des variables locales
 matrice_f Af, Bf, Cf;
 matrice_d Ad, Bd, Cd;
+vect_f V1, V2;
 float flops;
 
 int main(void){
@@ -286,6 +293,8 @@ int main(void){
 	init_matf(Cf,0.0);
 	
 	init_matd(Ad,7.0);
+	
+	init_vect(V1,2.3);
 	
 	//aff_matf(Af);
 	//aff_matd(Ad);
@@ -372,6 +381,19 @@ int main(void){
 	top1();
 	for(i=0; i< ITER; i++)
 		sommeF(Af,Bf,Cf);
+	top2();
+	temps = cpu_time();
+	
+	printf("time = %ld.%03ldms\n", temps/1000, temps%1000);
+	flops = (float)((N)*(N)) / (float)(temps * (1e-6)) *ITER;
+	printf("MFLOPS : %f\n",flops/1e6);
+	
+	
+	
+	printf("// MULT MATxVECT //\n");
+	top1();
+	for(i=0; i< ITER; i++)
+		multVect(Af,V1,V2);
 	top2();
 	temps = cpu_time();
 	
