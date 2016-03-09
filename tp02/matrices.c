@@ -57,6 +57,8 @@ unsigned long cpu_time(void) /* retourne des microsecondes */
 typedef float matrice_f[N][N];
 typedef double matrice_d [N][N];
 
+typedef float vect_f [N] ;
+
 // Fonctions d'initialisations de matrices
 void init_matf (matrice_f V, float value) {
   register unsigned int i, j ;
@@ -70,6 +72,13 @@ void init_matd (matrice_d V, double value) {
   for (i = 0; i < N; i++)
 	for(j = 0; j < N; j++)
 		V [i][j] = value ;
+}
+
+// Fonction d'initialisation des vecteurs
+void init_vect (vectfloat_t V, float value) {
+  register unsigned int i ;
+  for (i = 0; i < N; i++)
+    V [i] = value ;
 }
 
 // Fonctions d'affichage de matrices
@@ -110,6 +119,19 @@ void aff_matd (matrice_d V) {
 }
 
 // Fonctions de calcul
+/**
+ * Vecteurs
+ */
+void addition_v(vect_f V1, vect_f V2, vect_f V) {
+	
+	register unsigned int i ;
+	
+	for ( i = 0; i < N ; i++ ) {
+		V[i] = V1[i] + V2[i];
+	}
+}
+
+
 /**
  * Multiplications par les lignes
  */
@@ -239,6 +261,13 @@ void sommeF(matrice_f A, matrice_f B, matrice_f C){
 		}
 	}
 }
+
+/**
+ * Multiplication MATRICExVECTEUR
+ */
+ void multVect(matrice_f A, vect_f V, vect_f Res){
+	 
+ }
 
 // Définition des variables locales
 matrice_f Af, Bf, Cf;
