@@ -27,11 +27,12 @@
 static struct timeval _t1, _t2;
 static struct timezone _tz;
 static unsigned long _temps_residuel = 0;
+unsigned long temps ;
 
 #define top1() gettimeofday(&_t1, &_tz)
 #define top2() gettimeofday(&_t2, &_tz)
 
-#define ITER   2000
+#define ITER   10
 
 void init_cpu_time(void)
 {
@@ -50,7 +51,8 @@ unsigned long cpu_time(void) /* retourne des microsecondes */
 	Définition des matrices
  */
 
-#define N 10
+#define N 800
+#define BLOC 32
 
 typedef float matrice_f[N][N];
 typedef double matrice_d [N][N];
@@ -140,8 +142,7 @@ void muxColonneF(matrice_f A, matrice_f B, matrice_f C){
 	register unsigned int i, j, k;
 	for(j = 0; j < N; j++){
 		for(i = 0; i < N; i++){
-			C[i][j]=A[i][0]*B[0][j];
-			for(k=1; k < N; k++){
+			for(k=0; k < N; k++){
 				C[i][j]=C[i][j]+A[i][k]*B[k][i];
 			}
 		}
@@ -149,11 +150,51 @@ void muxColonneF(matrice_f A, matrice_f B, matrice_f C){
 	
 }
 
+void multBlocF(matrice_f A, matrice_f B, matrice_f C) {
+	int block_i, block_j, local_i, local_j, k;
+	float somme;
+	for(block_i=0; block_i<(N/BLOC); block_i++) {
+		for(block_j=0; block_j<(N/BLOC); block_j++) {
+			for(local_i=block_i*BLOC; local_i<(block_i+1)*BLOC; local_i++) {
+				for(local_j=block_j*BLOC; local_j<(block_j+1)*BLOC; local_j++) {
+					somme = 0;
+					for(k = 0; k < N; k++) {
+						somme += (A[local_i][k] * B[k][local_j]);
+					}
+					C[local_i][local_j] = somme;						
+				}
+			}
+		}
+	}
+}
+
+void multBlocF_OMP(matrice_f A, matrice_f B, matrice_f C) {
+	int block_i, block_j, local_i, local_j, k;
+	float somme;
+	
+	#pragma omp parallel for private(block_i, block_j, k, local_i, local_j)
+	for(block_i=0; block_i<(N/BLOC); block_i++) {
+		for(block_j=0; block_j<(N/BLOC); block_j++) {
+			for(local_i=block_i*BLOC; local_i<(block_i+1)*BLOC; local_i++) {
+				for(local_j=block_j*BLOC; local_j<(block_j+1)*BLOC; local_j++) {
+					somme = 0;
+					for(k = 0; k < N; k++) {
+						somme += (A[local_i][k] * B[k][local_j]);
+					}
+					C[local_i][local_j] = somme;						
+				}
+			}
+		}
+	}
+}
+
 // Définition des variables locales
 matrice_f Af, Bf, Cf;
 matrice_d Ad, Bd, Cd;
+float flops;
 
 int main(void){
+	int i;
 	
 	init_matf(Af,2.0);
 	init_matf(Bf,3.0);
@@ -161,16 +202,43 @@ int main(void){
 	
 	init_matd(Ad,7.0);
 	
-	aff_matf(Af);
-	aff_matd(Ad);
+	//aff_matf(Af);
+	//aff_matd(Ad);
+	//aff_matf(Cf);
 	
-	muxColonneF(Af,Af,Cf);
+	printf("Calculs sur %d matrices de dimenssion %d :\n", ITER, N);
 	
-	aff_matf(Cf);
+	printf("Multiplication | Lignes de la matrice de sortie\n");
 	top1();
-	multLigneF(Af,Bf,Cf);
+	for(i=0; i< ITER; i++)
+		multLigneF(Af,Bf,Cf);
 	top2();
-	aff_matf(Cf);
+	//aff_matf(Cf);
+	temps = cpu_time();
+	printf("time = %ld.%03ldms\n", temps/1000, temps%1000);
+	flops = (float)(2*pow(N,3)) / (float)(temps * (1e-6)) *ITER;
+	printf("MFLOPS : %f\n",flops/1e6);
+	
+	printf("Multiplication | Colonnes de la matrice de sortie\n");
+	top1();
+	for(i=0; i< ITER; i++)
+		muxColonneF(Af,Af,Cf);
+	top2();
+	temps = cpu_time();
+	printf("time = %ld.%03ldms\n", temps/1000, temps%1000);
+	flops = (float)(2*pow(N,3)) / (float)(temps * (1e-6)) *ITER;
+	printf("MFLOPS : %f\n",flops/1e6);
+	
+	printf("Multiplication | Par blocs de %d valeurs de la matrice de sortie\n",BLOC);
+	top1();
+	for(i=0; i< ITER; i++)
+		multBlocF(Af,Bf,Cf);
+	top2();
+	//aff_matf(Cf);
+	temps = cpu_time();
+	printf("time = %ld.%03ldms\n", temps/1000, temps%1000);
+	flops = (float)(2*pow(N,3)) / (float)(temps * (1e-6)) *ITER;
+	printf("MFLOPS : %f\n",flops/1e6);
 	
 	return 0;
 }
