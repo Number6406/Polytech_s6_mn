@@ -128,7 +128,7 @@ void multLigneF_OMP (matrice_f x, matrice_f y, matrice_f mRes) {
 	register unsigned int i, j, k;
 	float somme;
 	
-	#pragma omp parallel for private(i,j,k)
+	#pragma omp parallel for private(i,j,k,somme)
 	for(i = 0; i < N; i++) {
 		for (j = 0; j < N; j++) {
 			somme = 0;
@@ -206,7 +206,7 @@ void multBlocF_OMP(matrice_f A, matrice_f B, matrice_f C) {
 	int block_i, block_j, local_i, local_j, k;
 	float somme;
 	
-	#pragma omp parallel for private(block_i, block_j, k, local_i, local_j)
+	#pragma omp parallel for private(block_i, block_j, k, local_i, local_j, somme)
 	for(block_i=0; block_i<(N/BLOC); block_i++) {
 		for(block_j=0; block_j<(N/BLOC); block_j++) {
 			for(local_i=block_i*BLOC; local_i<(block_i+1)*BLOC; local_i++) {
