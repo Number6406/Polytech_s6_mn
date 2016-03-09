@@ -286,6 +286,7 @@ int main (int argc, char **argv) {
   // Additions
   // Floats
   top1 () ;
+  #pragma omp parallel for
     for (i=0; i < ITER; i++)
       { addition_f1 (Vect1, Vect2, v) ; }
   top2 () ;
