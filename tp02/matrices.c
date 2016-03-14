@@ -274,11 +274,31 @@ void sommeF(matrice_f A, matrice_f B, matrice_f C){
 		}
 	}
  }
+ 
+/**
+ * Addition VECTEUR+VECTEUR
+ */
+void addVect(vect_f V1, vect_f V2, vect_f Res) {
+	unsigned int i;
+	for(i=0; i<N; i++) {
+		Res[i] = V1[i]+V2[i];
+	}	
+}
+
+/**
+ * Gaxpy
+ */
+void gaxpy(vect_f V1, vect_f V2, matrice_f M, vect_f Res) {
+	vect_f interm;
+	multVect(M,V1, interm);
+	addVect(interm, V2, Res);
+}
+
 
 // Définition des variables locales
 matrice_f Af, Bf, Cf;
 matrice_d Ad, Bd, Cd;
-vect_f V1, V2;
+vect_f V1, V2, V3;
 float flops;
 
 int main(void){
@@ -361,6 +381,17 @@ int main(void){
 	
 	printf("time = %ld.%03ldms\n", temps/1000, temps%1000);
 	flops = (float)((N)*(N)) / (float)(temps * (1e-6)) *ITER;
+	printf("MFLOPS : %f\n",flops/1e6);
+	
+	printf("// GAXPY //\n");
+	top1();
+	for(i=0; i< ITER; i++)
+		gaxpy(V1,V2,Af,V3);
+	top2();
+	temps = cpu_time();
+	
+	printf("time = %ld.%03ldms\n", temps/1000, temps%1000);
+	flops = (float)((N*N)+N) / (float)(temps * (1e-6)) *ITER;
 	printf("MFLOPS : %f\n",flops/1e6);
 	
 	return 0;
