@@ -3,7 +3,7 @@
 #include <time.h>
 
 #define BORNEINF 0
-#define BORNESUP 99
+#define BORNESUP 20
 
 
 #define N 9
