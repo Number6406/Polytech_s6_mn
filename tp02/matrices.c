@@ -4,7 +4,13 @@
 #include <limits.h>
 #include <sys/time.h>
 
-#define CUBE(X) (X)*(X)*(X)
+#define THREADS 4
+#define ITER   5
+#define N 1024
+#define BLOC 32
+#define CUBE(X) ((X)*(X)*(X))
+#define CACHE	3072000
+
 /*
  * TP2 - Méthodes Numériques
  * 
@@ -32,7 +38,6 @@ unsigned long temps ;
 #define top1() gettimeofday(&_t1, &_tz)
 #define top2() gettimeofday(&_t2, &_tz)
 
-#define ITER   10
 
 void init_cpu_time(void)
 {
@@ -50,9 +55,6 @@ unsigned long cpu_time(void) /* retourne des microsecondes */
 /*
 	Définition des matrices
  */
-
-#define N 800
-#define BLOC 32
 
 typedef float matrice_f[N][N];
 typedef double matrice_d [N][N];
@@ -153,7 +155,7 @@ void multLigneF_OMP (matrice_f x, matrice_f y, matrice_f mRes) {
 	register unsigned int i, j, k;
 	float somme;
 	
-	#pragma omp parallel for private(i,j,k,somme)
+	#pragma omp parallel for private(i,j,k,somme) num_threads(THREADS)
 	for(i = 0; i < N; i++) {
 		for (j = 0; j < N; j++) {
 			somme = 0;
@@ -198,7 +200,7 @@ void muxColonneF(matrice_f A, matrice_f B, matrice_f C){
 void muxColonneF_OMP(matrice_f A, matrice_f B, matrice_f C){
 	register unsigned int i, j, k;
 	
-	#pragma omp parallel for private(i,j,k)
+	#pragma omp parallel for private(i,j,k) num_threads(THREADS)
 	for(j = 0; j < N; j++){
 		for(i = 0; i < N; i++){
 			for(k=0; k < N; k++){
@@ -234,7 +236,7 @@ void multBlocF_OMP(matrice_f A, matrice_f B, matrice_f C) {
 	int block_i, block_j, local_i, local_j, k;
 	float somme;
 	
-	#pragma omp parallel for private(block_i, block_j, k, local_i, local_j, somme)
+	#pragma omp parallel for private(block_i, block_j, k, local_i, local_j, somme) num_threads(THREADS)
 	for(block_i=0; block_i<(N/BLOC); block_i++) {
 		for(block_j=0; block_j<(N/BLOC); block_j++) {
 			for(local_i=block_i*BLOC; local_i<(block_i+1)*BLOC; local_i++) {
@@ -294,6 +296,11 @@ void gaxpy(vect_f V1, vect_f V2, matrice_f M, vect_f Res) {
 	addVect(interm, V2, Res);
 }
 
+char *depasseCache() {
+	if(sizeof(float) * N * N > CACHE) return "oui";
+	else return "non";
+}
+
 
 // Définition des variables locales
 matrice_f Af, Bf, Cf;
@@ -320,8 +327,10 @@ int main(void){
 	//aff_matd(Ad);
 	//aff_matf(Cf);
 	
-	printf("Calculs sur %d matrices de dimension %d :\n", ITER, N);
-	
+	printf("Calculs sur %d matrices\n", ITER);
+	printf("Dimension des matrices : %d\n", N);
+	printf("Nombre de threads : %d\n", THREADS);
+	printf("Dépassement du cache : %s\n", depasseCache());
 	printf("// MULTIPLICATIONS //\n");
 	/* Affichage du temps et des MFLOPS pour différents types d'opérations */
 
@@ -333,7 +342,7 @@ int main(void){
 	temps = cpu_time();
 	
 	printf("time = %ld.%03ldms\n", temps/1000, temps%1000);
-	flops = (float)(2*CUBE(N)) / (float)(temps * (1e-6)) *ITER;
+	flops = (float)(2*(float)CUBE(N)) / (float)(temps * (1e-6)) *ITER;
 	printf("MFLOPS : %f\n",flops/1e6);	
 	
 	printf("Multiplication | Colonnes de la matrice de sortie\n");
@@ -344,7 +353,7 @@ int main(void){
 	temps = cpu_time();
 	
 	printf("time = %ld.%03ldms\n", temps/1000, temps%1000);
-	flops = (float)(2*CUBE(N)) / (float)(temps * (1e-6)) *ITER;
+	flops = (float)(2*(float)CUBE(N)) / (float)(temps * (1e-6)) *ITER;
 	printf("MFLOPS : %f\n",flops/1e6);	
 	
 	printf("Multiplication | Par blocs de %d valeurs de la matrice de sortie\n",BLOC);
@@ -355,7 +364,7 @@ int main(void){
 	temps = cpu_time();
 	
 	printf("time = %ld.%03ldms\n", temps/1000, temps%1000);
-	flops = (float)(2*CUBE(N)) / (float)(temps * (1e-6)) *ITER;
+	flops = (float)(2*(float)CUBE(N)) / (float)(temps * (1e-6)) *ITER;
 	printf("MFLOPS : %f\n",flops/1e6);
 	
 	
