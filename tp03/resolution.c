@@ -73,7 +73,7 @@ void init_vect (vect V) {
     V [i] = rand_b();
 }
 
-int resolutionL (matL M, vect B, vect X) {
+void resolutionL (matL M, vect B, vect X) {
 	int i, j;
 	int somme;
 	
@@ -202,18 +202,22 @@ int main(void){
 	init_matL(L);
 	aff_matL(L);
 	
+	printf("Résolution de matrice diagonale : AX = B\n");
+	resolutionL(L,B,X);
+	printf("A :\n"); aff_matL(L);
+	printf("B : "); aff_vect(B);
+	printf("X :\n"); aff_vect(X);
+	
 	
 	printf("Matrice diagonale : \n");
 	matd D;
 	init_matd(D);
 	aff_matd(D);
 	
-	vect B;
 	init_vect(B);
 	aff_vect(B);
 	
 	printf("Résolution de matrice diagonale : AX = B\n");
-	vect X;
 	res_d(D,B,X);
 	printf("A :\n"); aff_matd(D);
 	printf("B : "); aff_vect(B);
