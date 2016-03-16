@@ -2,5 +2,7 @@
 *.o
 
 *.tar.gz
+*.pdf
 
 tp02/matrices
+tp03/resolution
