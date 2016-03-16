@@ -29,7 +29,7 @@ typedef float vect[N] ;
 
 /** Fonction renvoyant un entier aléatoire*/
 float rand_b(){
-	return ((float) (rand()%((BORNESUP*10)-BORNEINF+1) + BORNEINF))/10.0;
+	return ((float) (rand()%((BORNESUP)-BORNEINF+1) + BORNEINF));
 }
 /**
  * Fonctions d'initialisation des matrices utilisées pour la résolution de systéme linéaire. 
@@ -53,7 +53,7 @@ void init_matL (matL A) {
 	srand(time(NULL));
 	for (i = 0; i < N; i++){
 		A[i] = malloc(sizeof(float)*(i+1));
-		for(j = 0; j < i; j++){
+		for(j = 0; j <= i; j++){
 			A[i][j] = rand_b() ;
 		}
 	}
@@ -85,7 +85,7 @@ void aff_matU (matU V) {
 			if(j >= i){
 				printf("|%4.1f",V[i][j-i]) ;
 			} else {
-				printf("|%4.1f",0.0) ;
+				printf("|    ") ;
 			}
 		}
 		printf("|\n");
@@ -108,7 +108,7 @@ void aff_matL (matL V) {
 			if(j <= i){
 				printf("|%4.1f",V[i][j]) ;
 			} else {
-				printf("|%4.1f",0.0) ;
+				printf("|    ") ;
 			}
 		}
 		printf("|\n");
@@ -131,7 +131,7 @@ void aff_matd(matd V) {
 			if(j == i){
 				printf("|%4.1f",V[i]) ;
 			} else {
-				printf("|%4.1f",0.0) ;
+				printf("|    ") ;
 			}
 		}
 		printf("|\n");
@@ -140,6 +140,16 @@ void aff_matd(matd V) {
 		printf("|----") ;
 	}
 	printf("|\n");
+}
+
+// Fonction d'affichage de vecteur
+void aff_vect (vect V){
+	unsigned register int i;
+	printf("[ %3.1f ",V[0]);
+	for(i = 1; i < N; i++){
+		printf("| %3.1f ",V[i]);
+	}
+	printf("]\n");
 }
 
 
@@ -166,9 +176,9 @@ int res_d(matd A, vect B, vect X){
 
 
 int main(void){
-	//matU U;
-	//init_matU(U);
-	//aff_matU(U);
+	matU U;
+	init_matU(U);
+	aff_matU(U);
 	
 	matL L;
 	init_matL(L);
@@ -177,6 +187,17 @@ int main(void){
 	matd D;
 	init_matd(D);
 	aff_matd(D);
+	
+	vect B;
+	init_vect(B);
+	aff_vect(B);
+	
+	printf("Résolution de matrice diagonale : AX = B\n");
+	vect X;
+	res_d(D,B,X);
+	printf("A :\n"); aff_matd(D);
+	printf("B : "); aff_vect(B);
+	printf("X :\n"); aff_vect(X);
 	
 	return 0;
 }
