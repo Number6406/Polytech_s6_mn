@@ -73,6 +73,20 @@ void init_vect (vect V) {
     V [i] = rand_b();
 }
 
+int resolutionL (matL M, vect B, vect X) {
+	int i, j;
+	int somme;
+	
+	for(i=0; i<N; i++) {
+		somme = 0;
+		for(j=0; j<=i; j++) {
+			somme += M[i][j];
+		}
+		
+		X[i] = somme / B[i];
+	}
+}
+
 // Fonctions d'affichage de matrices supérieures
 void aff_matU (matU V) {
 	register unsigned int i, j ;
@@ -180,10 +194,16 @@ int main(void){
 	init_matU(U);
 	aff_matU(U);
 	
+	vect X, B;
+	init_vect(B);
+	
+	printf("Matrice inférieure : \n");
 	matL L;
 	init_matL(L);
 	aff_matL(L);
 	
+	
+	printf("Matrice diagonale : \n");
 	matd D;
 	init_matd(D);
 	aff_matd(D);
