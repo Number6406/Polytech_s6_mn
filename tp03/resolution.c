@@ -3,7 +3,7 @@
 #include <time.h>
 
 #define BORNEINF 0
-#define BORNESUP 99
+#define BORNESUP 20
 
 
 #define N 9
@@ -71,20 +71,6 @@ void init_vect (vect V) {
   register unsigned int i ;
   for (i = 0; i < N; i++)
     V [i] = rand_b();
-}
-
-void resolutionL (matL M, vect B, vect X) {
-	int i, j;
-	int somme;
-	
-	for(i=0; i<N; i++) {
-		somme = 0;
-		for(j=0; j<=i; j++) {
-			somme += M[i][j];
-		}
-		
-		X[i] = somme / B[i];
-	}
 }
 
 // Fonctions d'affichage de matrices supérieures
@@ -161,7 +147,7 @@ void aff_vect (vect V){
 	unsigned register int i;
 	printf("[ %3.1f ",V[0]);
 	for(i = 1; i < N; i++){
-		printf("| %3.1f ",V[i]);
+		printf("| %4.2f ",V[i]);
 	}
 	printf("]\n");
 }
@@ -188,13 +174,29 @@ int res_d(matd A, vect B, vect X){
 	return 0;
 }
 
+// Résolution avec des matrices inférieures
+void resolutionL (matL M, vect B, vect X) {
+	int i, j;
+	int somme;
+	
+	for(i=0; i<N; i++) {
+		somme = 0;
+		for(j=0; j<=i; j++) {
+			somme += M[i][j];
+		}
+		
+		X[i] = somme / B[i];
+	}
+}
+
 
 int main(void){
 	matU U;
 	init_matU(U);
 	aff_matU(U);
 	
-	vect X, B;
+	vect X;
+	vect B;
 	init_vect(B);
 	
 	printf("Matrice inférieure : \n");
