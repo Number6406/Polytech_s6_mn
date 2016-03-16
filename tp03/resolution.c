@@ -73,20 +73,6 @@ void init_vect (vect V) {
     V [i] = rand_b();
 }
 
-int resolutionL (matL M, vect B, vect X) {
-	int i, j;
-	int somme;
-	
-	for(i=0; i<N; i++) {
-		somme = 0;
-		for(j=0; j<=i; j++) {
-			somme += M[i][j];
-		}
-		
-		X[i] = somme / B[i];
-	}
-}
-
 // Fonctions d'affichage de matrices supérieures
 void aff_matU (matU V) {
 	register unsigned int i, j ;
@@ -161,7 +147,7 @@ void aff_vect (vect V){
 	unsigned register int i;
 	printf("[ %3.1f ",V[0]);
 	for(i = 1; i < N; i++){
-		printf("| %3.1f ",V[i]);
+		printf("| %4.2f ",V[i]);
 	}
 	printf("]\n");
 }
@@ -186,6 +172,21 @@ int res_d(matd A, vect B, vect X){
 		else X[i] = B[i]/A[i];
 	}
 	return 0;
+}
+
+// Résolution avec des matrices inférieures
+int resolutionL (matL M, vect B, vect X) {
+	int i, j;
+	int somme;
+	
+	for(i=0; i<N; i++) {
+		somme = 0;
+		for(j=0; j<=i; j++) {
+			somme += M[i][j];
+		}
+		
+		X[i] = somme / B[i];
+	}
 }
 
 
