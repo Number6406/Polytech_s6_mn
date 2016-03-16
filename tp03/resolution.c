@@ -175,7 +175,7 @@ int res_d(matd A, vect B, vect X){
 }
 
 // Résolution avec des matrices inférieures
-int resolutionL (matL M, vect B, vect X) {
+void resolutionL (matL M, vect B, vect X) {
 	int i, j;
 	int somme;
 	
@@ -195,7 +195,8 @@ int main(void){
 	init_matU(U);
 	aff_matU(U);
 	
-	vect X, B;
+	vect X;
+	vect B;
 	init_vect(B);
 	
 	printf("Matrice inférieure : \n");
@@ -209,12 +210,10 @@ int main(void){
 	init_matd(D);
 	aff_matd(D);
 	
-	vect B;
 	init_vect(B);
 	aff_vect(B);
 	
 	printf("Résolution de matrice diagonale : AX = B\n");
-	vect X;
 	res_d(D,B,X);
 	printf("A :\n"); aff_matd(D);
 	printf("B : "); aff_vect(B);
