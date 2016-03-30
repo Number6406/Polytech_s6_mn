@@ -1,3 +1,5 @@
+//gcc -msse4.1 -- compilation
+
 #define BORNEINF 0
 #define BORNESUP 20
 
