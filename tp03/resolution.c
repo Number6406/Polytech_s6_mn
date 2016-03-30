@@ -34,7 +34,7 @@ float rand_b(){
 /**
  * Fonctions d'initialisation des matrices utilisées pour la résolution de systéme linéaire. 
  */
- // Fonctions d'initialisation de matrice supérieure
+ // Fonctions d'initialisation de matrice supérieure, aléatoirement
 void init_matU (matU A) {
 	register unsigned int i, j ;
 	srand(time(NULL));
@@ -47,7 +47,7 @@ void init_matU (matU A) {
 }
  
  
-// Fonctions d'initialisation de matrice inférieure
+// Fonctions d'initialisation de matrice inférieure, aléatoirement
 void init_matL (matL A) {
 	register unsigned int i, j ;
 	srand(time(NULL));
@@ -58,7 +58,7 @@ void init_matL (matL A) {
 		}
 	}
 }
-// Fonction d'initialisation dematrice diagonale
+// Fonction d'initialisation dematrice diagonale, aléatoirement
 void init_matd (matd A) {
   register unsigned int i ;
   for (i = 0; i < N; i++)
@@ -66,13 +66,16 @@ void init_matd (matd A) {
 }
 
 
-// Fonction d'initialisation de vecteur
+// Fonction d'initialisation de vecteur, aléatoirement
 void init_vect (vect V) {
   register unsigned int i ;
   for (i = 0; i < N; i++)
     V [i] = rand_b();
 }
 
+/**
+ * Fonctions d'affichage
+ */
 // Fonctions d'affichage de matrices supérieures
 void aff_matU (matU V) {
 	register unsigned int i, j ;
