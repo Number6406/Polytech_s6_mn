@@ -6,7 +6,7 @@
 #define BORNESUP 20
 
 
-#define N 5
+#define N 3
 
 /**
  * Définition des différents types de matrices utilisés dans ce programme :
@@ -145,7 +145,7 @@ void aff_matd(matd V) {
 // Fonction d'affichage de vecteur
 void aff_vect (vect V){
 	unsigned register int i;
-	printf("[ %3.1f ",V[0]);
+	printf("[ %4.2f ",V[0]);
 	for(i = 1; i < N; i++){
 		printf("| %4.2f ",V[i]);
 	}
@@ -157,7 +157,7 @@ void aff_vect (vect V){
  * Fonctions de résolution
  */
 // Résolution de matrice diagonale
-int res_d(matd A, vect B, vect X){
+int resolutionD(matd A, vect B, vect X){
 	register unsigned int i;
 	
 	for(i=0;i < N; i++){
@@ -191,39 +191,46 @@ void resolutionL (matL M, vect B, vect X) {
 
 
 int main(void){
-	matU U;
+	matU U;	
+	vect X;
+	vect B;
+	
+	
 	init_matU(U);
 	aff_matU(U);
 	
-	vect X;
-	vect B;
-	init_vect(B);
-	
 	printf("Matrice inférieure : \n");
 	matL L;
+	// Test du cours
 	init_matL(L);
-	aff_matL(L);
+	L[0][0]=2;
+	L[1][0]=4;
+	L[1][1]=-1;
+	L[2][0]=-6;
+	L[2][1]=1;
+	L[2][2]=-2;
 	
-	printf("Résolution de matrice diagonale : AX = B\n");
+	B[0]=2;
+	B[1]=3;
+	B[2]=-7;
+	
+	printf("Résolution de matrice inférieure : AX = B\n");
 	resolutionL(L,B,X);
 	printf("A :\n"); aff_matL(L);
 	printf("B : "); aff_vect(B);
-	printf("X :\n"); aff_vect(X);
+	printf("X : "); aff_vect(X);
 	
 	
 	printf("Matrice diagonale : \n");
-	matd D;
+	matd D;	
 	init_matd(D);
-	aff_matd(D);
-	
 	init_vect(B);
-	aff_vect(B);
 	
 	printf("Résolution de matrice diagonale : AX = B\n");
-	res_d(D,B,X);
+	resolutionD(D,B,X);
 	printf("A :\n"); aff_matd(D);
 	printf("B : "); aff_vect(B);
-	printf("X :\n"); aff_vect(X);
+	printf("X : "); aff_vect(X);
 	
 	return 0;
 }
