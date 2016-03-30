@@ -189,6 +189,20 @@ void resolutionL (matL M, vect B, vect X) {
 	}
 }
 
+//Résolution avec des matrices supérieures
+void resolutionU (matU M, vect B, vect X) {
+	int i, j;
+	int somme;
+	
+	for(i=0; i<N; i++) {
+		for(j=i; j<N; j++) {
+				somme += M[i][j];
+		}
+		
+		X[i] = somme / B[i];
+	}
+}
+
 
 int main(void){
 	matU U;
@@ -204,7 +218,7 @@ int main(void){
 	init_matL(L);
 	aff_matL(L);
 	
-	printf("Résolution de matrice diagonale : AX = B\n");
+	printf("Résolution de matrice inférieure : AX = B\n");
 	resolutionL(L,B,X);
 	printf("A :\n"); aff_matL(L);
 	printf("B : "); aff_vect(B);
