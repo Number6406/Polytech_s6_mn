@@ -198,7 +198,6 @@ void resolutionU (matU M, vect B, vect X) {
 		for(j=i; j<N; j++) {
 				somme += M[i][j];
 		}
-		
 		X[i] = somme / B[i];
 	}
 }
