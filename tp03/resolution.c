@@ -189,6 +189,20 @@ void resolutionL (matL M, vect B, vect X) {
 	}
 }
 
+//Résolution avec des matrices supérieures
+void resolutionU (matU M, vect B, vect X) {
+	int i, j;
+	int somme;
+	
+	for(i=0; i<N; i++) {
+		for(j=i; j<N; j++) {
+				somme += M[i][j];
+		}
+		
+		X[i] = somme / B[i];
+	}
+}
+
 
 int main(void){
 	matU U;	
