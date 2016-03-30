@@ -6,7 +6,7 @@
 #define BORNESUP 20
 
 
-#define N 9
+#define N 5
 
 /**
  * Définition des différents types de matrices utilisés dans ce programme :
