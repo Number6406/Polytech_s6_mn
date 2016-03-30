@@ -204,6 +204,12 @@ int main(void){
 	init_matL(L);
 	aff_matL(L);
 	
+	printf("Résolution de matrice diagonale : AX = B\n");
+	resolutionL(L,B,X);
+	printf("A :\n"); aff_matL(L);
+	printf("B : "); aff_vect(B);
+	printf("X :\n"); aff_vect(X);
+	
 	
 	printf("Matrice diagonale : \n");
 	matd D;
