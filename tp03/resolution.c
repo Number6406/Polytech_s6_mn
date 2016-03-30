@@ -2,11 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define BORNEINF 0
-#define BORNESUP 20
-
-
-#define N 5
+#include "resolution.h"
 
 /**
  * Définition des différents types de matrices utilisés dans ce programme :
@@ -201,43 +197,4 @@ void resolutionU (matU M, vect B, vect X) {
 		
 		X[i] = somme / B[i];
 	}
-}
-
-
-int main(void){
-	matU U;
-	init_matU(U);
-	aff_matU(U);
-	
-	vect X;
-	vect B;
-	init_vect(B);
-	
-	printf("Matrice inférieure : \n");
-	matL L;
-	init_matL(L);
-	aff_matL(L);
-	
-	printf("Résolution de matrice inférieure : AX = B\n");
-	resolutionL(L,B,X);
-	printf("A :\n"); aff_matL(L);
-	printf("B : "); aff_vect(B);
-	printf("X :\n"); aff_vect(X);
-	
-	
-	printf("Matrice diagonale : \n");
-	matd D;
-	init_matd(D);
-	aff_matd(D);
-	
-	init_vect(B);
-	aff_vect(B);
-	
-	printf("Résolution de matrice diagonale : AX = B\n");
-	res_d(D,B,X);
-	printf("A :\n"); aff_matd(D);
-	printf("B : "); aff_vect(B);
-	printf("X :\n"); aff_vect(X);
-	
-	return 0;
 }
