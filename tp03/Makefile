@@ -1,7 +1,7 @@
 CC = gcc
 EXEC = res_diag res_inf res_sup vectorisation
 CFLAGS = -Wall
-SRCS = res_diag.c res_inf.c res_sup.c resolution.c
+SRCS = res_diag.c res_inf.c res_sup.c resolution.c vectorisation.c
 OBJS = $(SRCS:.c=.o)
 
 all : $(EXEC)
@@ -23,7 +23,7 @@ res_sup : res_sup.o resolution.o
 
 vectorisation:
 	-@echo Création de "l'exécutable" $@
-	$CC vectorisation.c -o vectorisation
+	$(CC) vectorisation.c -o vectorisation
 
 clean :
 	@echo "Suppression des objets"
