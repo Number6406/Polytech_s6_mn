@@ -21,7 +21,7 @@ res_sup : res_sup.o resolution.o
 	-@echo Creation de "l'executable" $@
 	$(CC) res_sup.o -o res_sup
 
-vectorisation:
+vectorisation : vectorisation.c
 	-@echo Création de "l'exécutable" $@
 	$CC vectorisation.c -o vectorisation
 

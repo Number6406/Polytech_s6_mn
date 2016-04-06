@@ -65,6 +65,8 @@ int main (int argc, char **argv)
 	int i;
 
 	vectf a ; initVf(a);
+
+		print_vector_float(a);
 	vectf b ; initVf(b);
 	vectf c ;
 
