@@ -4,5 +4,7 @@
 *.tar.gz
 *.pdf
 
+tp01/operation_vectorielle_abonnenc-bonhoure
 tp02/matrices
 tp03/resolution
+tp03/vectorisation
