@@ -23,7 +23,7 @@ res_sup : res_sup.o resolution.o
 
 vectorisation : vectorisation.c
 	-@echo Création de "l'exécutable" $@
-	$(CC) vectorisation.c -o vectorisation
+	$(CC) -msse4.1 vectorisation.c -o vectorisation
 
 clean :
 	@echo "Suppression des objets"
