@@ -19,7 +19,7 @@ void print_vector_float (vectf T)
 	int i;
 
 	for(i=0; i<N; i++) {
-		printf ("float : %f %f %f %f", T[i][0], T[i][1], T[i][2], T[i][3]) ;
+		printf ("float : %2.4f %2.4f %2.4f %2.4f", T[i][0], T[i][1], T[i][2], T[i][3]) ;
 	}
 
 	printf("\n");

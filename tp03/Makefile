@@ -10,20 +10,20 @@ all : $(EXEC)
 #  $(CC) $(CFLAGS) -c $<
 
 res_diag : res_diag.o resolution.o
-	-@echo Creation de "l'executable" $@
-	$(CC) res_diag.o -o res_diag
+	-@echo // Creation de "l'executable" $@
+	$(CC) res_diag.o -o bin/res_diag
 
 res_inf : res_inf.o resolution.o
-	-@echo Creation de "l'executable" $@
-	$(CC) res_inf.o -o res_inf
+	-@echo // Creation de "l'executable" $@
+	$(CC) res_inf.o -o bin/res_inf
 
 res_sup : res_sup.o resolution.o
-	-@echo Creation de "l'executable" $@
-	$(CC) res_sup.o -o res_sup
+	-@echo // Creation de "l'executable" $@
+	$(CC) res_sup.o -o bin/res_sup
 
 vectorisation:
-	-@echo Création de "l'exécutable" $@
-	$(CC) vectorisation.c -o vectorisation
+	-@echo // Création de "l'exécutable" $@
+	$(CC) vectorisation.c -o bin/vectorisation
 
 clean :
 	@echo "Suppression des objets"
