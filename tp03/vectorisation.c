@@ -15,7 +15,7 @@ void print_vector_float (vectf T)
 	int i;
 
 	for(i=0; i<N; i++) {
-		printf ("float : %2.4f ", T[i]) ;
+		printf ("float : %2.4f", T[i]) ;
 	}
 
 	printf("\n");
