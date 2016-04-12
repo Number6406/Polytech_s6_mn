@@ -10,12 +10,12 @@ int main(int argc, char const *argv[]) {
 	vectf B;
 	init_vectf(B);
 
-	mat L;
-	init_matInf(L);
+	mat U;
+	init_matSup(U);
 
-	resolutionInf(L,B,X);
+	resolutionSup(U,B,X);
 
-	printf("A :\n"); aff_mat(L);
+	printf("A :\n"); aff_mat(U);
 	printf("B : "); aff_vectf(B);
 	printf("X :"); aff_vectf(X);
 
