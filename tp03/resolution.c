@@ -13,9 +13,9 @@
 // Pour une matrice diagonale on ne représente que les coefficients diagonaux
 typedef float matd[N];
 // Matrice triangulaire supérieure, allouée dynamiquement
-typedef float* matU[N]; 
+typedef float* matU[N];
 // Matrice triangulaire inférieure, allouée dynamiquement
-typedef float* matL[N]; 
+typedef float* matL[N];
 
 // Matrice quelconque
 typedef float matrice[N][N];
@@ -28,7 +28,7 @@ float rand_b(){
 	return ((float) (rand()%((BORNESUP)-BORNEINF+1) + BORNEINF));
 }
 /**
- * Fonctions d'initialisation des matrices utilisées pour la résolution de systéme linéaire. 
+ * Fonctions d'initialisation des matrices utilisées pour la résolution de systéme linéaire.
  */
  // Fonctions d'initialisation de matrice supérieure, aléatoirement
 void init_matU (matU A) {
@@ -41,8 +41,8 @@ void init_matU (matU A) {
 		}
 	}
 }
- 
- 
+
+
 // Fonctions d'initialisation de matrice inférieure, aléatoirement
 void init_matL (matL A) {
 	register unsigned int i, j ;
@@ -158,14 +158,14 @@ void aff_vect (vect V){
 // Résolution de matrice diagonale
 int res_d(matd A, vect B, vect X){
 	register unsigned int i;
-	
+
 	for(i=0;i < N; i++){
 		if(A[i]==0){
 			if(B[i]!=0){
 				fprintf(stderr,"Un coefficient est nul, pas de solution\n");
 				return 1;
 			} else
-				fprintf(stderr,"Une infinité de solutions\n"); 
+				fprintf(stderr,"Une infinité de solutions\n");
 				return 2;
 		}
 		else X[i] = B[i]/A[i];
@@ -177,13 +177,13 @@ int res_d(matd A, vect B, vect X){
 void resolutionL (matL M, vect B, vect X) {
 	int i, j;
 	int somme;
-	
+
 	for(i=0; i<N; i++) {
 		somme = 0;
 		for(j=0; j<=i; j++) {
 			somme += M[i][j];
 		}
-		
+
 		X[i] = somme / B[i];
 	}
 }
@@ -191,13 +191,13 @@ void resolutionL (matL M, vect B, vect X) {
 //Résolution avec des matrices supérieures
 void resolutionU (matU M, vect B, vect X) {
 	int i, j;
-	int somme;
-	
-	for(i=0; i<N; i++) {
-		for(j=i; j<N; j++) {
-				somme += M[i][j];
+
+	X[N] = B[N] / M[N][N];
+	for(i=N-1; i>=0; i--) {
+		X[i] = B[i];
+		for(j=i+1; j<N; j++) {
+				X[i] -= (M[i][j]*B[j]);
 		}
-		
-		X[i] = somme / B[i];
+		X[i] = X[i] / M[i][i];
 	}
 }
