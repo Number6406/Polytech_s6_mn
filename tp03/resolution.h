@@ -1,6 +1,6 @@
 //gcc -msse4.1 -- compilation
 
-#define BORNEINF 0
+#define BORNEINF 1
 #define BORNESUP 20
 #define AFFICHAGE
 

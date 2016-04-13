@@ -5,26 +5,28 @@
 #include "resolution.c"
 
 int main(void) {
-	
+
 	vect X;
 	vect B;
 	init_vect(B);
-	
+	B[2] = 2.0;
+
 	printf("Matrice supérieure : \n");
 	matU U;
 	init_matU(U);
+	U[2][0] = 1.0;
 	#ifdef AFFICHAGE
 	aff_matU(U);
 	#endif
-	
+
 	printf("Résolution de matrice supérieure : AX = B\n");
-	resolutionL(U,B,X);
-	
+	resolutionU(U,B,X);
+
 	#ifdef AFFICHAGE
 	printf("A :\n"); aff_matU(U);
 	printf("B : "); aff_vect(B);
 	printf("X :\n"); aff_vect(X);
 	#endif
-	
+
 	return 0;
 }
