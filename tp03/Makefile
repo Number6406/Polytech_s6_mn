@@ -1,4 +1,4 @@
-CC = gcc
+CC = gcc -O2
 EXEC = res_diag res_inf res_sup vectorisation tri_inf_v tri_sup_v prod_matrice_v
 CFLAGS = -Wall
 SRCS = res_diag.c res_inf.c res_sup.c resolution.c vectorisation.c tri_inf_v.c tri_sup_v.c prod_matrice_v.c
@@ -23,7 +23,7 @@ res_sup : res_sup.o resolution.o
 
 vectorisation : vectorisation.c
 	-@echo Création de "l'exécutable" $@
-	$(CC) -msse4.1 vectorisation.c -o bin/vectorisation
+	$(CC) -msse4.2 vectorisation.c -o bin/vectorisation
 
 tri_inf_v : tri_inf_v.c
 	-@echo Création de "l'exécutable" $@
@@ -35,7 +35,7 @@ tri_sup_v : tri_sup_v.c
 
 prod_matrice_v : tri_sup_v.c
 	-@echo Création de "l'exécutable" $@
-	$(CC) -msse4.1 prod_matrice_v.c -o bin/prod_matrice_v
+	$(CC) -msse4.1 -Wall -fopenmp prod_matrice_v.c -o bin/prod_matrice_v
 
 clean :
 	@echo "Suppression des objets"
