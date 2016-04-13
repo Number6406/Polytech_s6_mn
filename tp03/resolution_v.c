@@ -2,12 +2,12 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include <nmmintrin.h>
-#include <xmmintrin.h>
+#include <smmintrin.h>
 
 #define BORNEINF 0
 #define BORNESUP 20
-#define N 4
+#define N 1024
+#define ITER 1000
 
 //Vectorisation de floats alignés sur 16 octets (4 float de 32 bits donc)
 typedef float vectf [N]  __attribute__ ((aligned (16))) ;
@@ -124,9 +124,9 @@ void resolutionInf (mat M, vectf B, vectf Res) {
 			v3 = _mm_load_ps(Res+j);
       v4 = _mm_mul_ps(v1,v3);
 
-			v4 = _mm_dp_ps(v3,v2, 0xFF);
+			v5 = _mm_dp_ps(v4,v2, 0xFF);
 
-			somme += v3[0];
+			somme += v5[0];
 		}
 
 		Res[i] = (B[i]-somme) / M[i][i];

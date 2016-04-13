@@ -4,7 +4,8 @@
 #define BORNESUP 20
 #define AFFICHAGE
 
-#define N 3
+#define N 1024
+#define ITER 1000
 
 /**
  * Définition des différents types de matrices utilisés dans ce programme :
@@ -31,8 +32,9 @@ float rand_b();
  */
  // Fonctions d'initialisation de matrice supérieure
 void init_matU (matU A);
-
-
+ 
+void sup_matU(matU A);
+void sup_matL(matL A);
 // Fonctions d'initialisation de matrice inférieure
 void init_matL (matL A);
 // Fonction d'initialisation dematrice diagonale

@@ -5,19 +5,22 @@
 #include "resolution_v.c"
 
 int main(int argc, char const *argv[]) {
+	int i;
+	
+	for(i=0;i<ITER;i++){
 
-	vectf X;
-	vectf B;
-	init_vectf(B);
+		vectf X;
+		vectf B;
+		init_vectf(B);
 
-	mat L;
-	init_matInf(L);
+		mat L;
+		init_matInf(L);
 
-	resolutionInf(L,B,X);
+		resolutionInf(L,B,X);
 
-	printf("A :\n"); aff_mat(L);
-	printf("B : "); aff_vectf(B);
-	printf("X :"); aff_vectf(X);
-
+		printf("A :\n"); aff_mat(L);
+		printf("B : "); aff_vectf(B);
+		printf("X :"); aff_vectf(X);	
+	}
 	return 0;
 }

@@ -4,6 +4,7 @@
 
 #include "resolution.h"
 
+//#define AFFICHAGE
 /**
  * Définition des différents types de matrices utilisés dans ce programme :
  * - Matrice diagonale
@@ -41,8 +42,18 @@ void init_matU (matU A) {
 		}
 	}
 }
-
-
+void sup_matU(matU A){
+	register unsigned int i;
+	for (i = 0; i < N; i++){
+		free(A[i]);
+	}
+}
+void sup_matL(matL A){
+	register unsigned int i;
+	for (i = 0; i < N; i++){
+		free(A[i]);
+	}
+}
 // Fonctions d'initialisation de matrice inférieure, aléatoirement
 void init_matL (matL A) {
 	register unsigned int i, j ;
