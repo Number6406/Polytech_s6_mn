@@ -144,7 +144,7 @@ void aff_matd(matd V) {
 // Fonction d'affichage de vecteur
 void aff_vect (vect V){
 	unsigned register int i;
-	printf("[ %3.1f ",V[0]);
+	printf("[ %4.2f ",V[0]); 
 	for(i = 1; i < N; i++){
 		printf("| %4.2f ",V[i]);
 	}
@@ -180,11 +180,11 @@ void resolutionL (matL M, vect B, vect X) {
 
 	for(i=0; i<N; i++) {
 		somme = 0;
-		for(j=0; j<=i; j++) {
-			somme += M[i][j];
+		for(j=0; j<i; j++) {
+      somme += (M[i][j]*X[j]);
 		}
 
-		X[i] = somme / B[i];
+		X[i] = (B[i]-somme)/M[i][i];
 	}
 }
 

@@ -4,7 +4,7 @@
 #define BORNESUP 20
 #define AFFICHAGE
 
-#define N 5
+#define N 3
 
 /**
  * Définition des différents types de matrices utilisés dans ce programme :
