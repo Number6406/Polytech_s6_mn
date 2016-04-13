@@ -2,7 +2,7 @@
 
 #define BORNEINF 0
 #define BORNESUP 20
-
+#define AFFICHAGE
 
 #define N 5
 
@@ -15,9 +15,9 @@
 // Pour une matrice diagonale on ne représente que les coefficients diagonaux
 typedef float matd[N];
 // Matrice triangulaire supérieure, allouée dynamiquement
-typedef float* matU[N]; 
+typedef float* matU[N];
 // Matrice triangulaire inférieure, allouée dynamiquement
-typedef float* matL[N]; 
+typedef float* matL[N];
 // Matrice quelconque
 typedef float matrice[N][N];
 // Vecteur
@@ -27,12 +27,12 @@ typedef float vect[N] ;
 /** Fonction renvoyant un entier aléatoire*/
 float rand_b();
 /**
- * Fonctions d'initialisation des matrices utilisées pour la résolution de systéme linéaire. 
+ * Fonctions d'initialisation des matrices utilisées pour la résolution de systéme linéaire.
  */
  // Fonctions d'initialisation de matrice supérieure
 void init_matU (matU A);
- 
- 
+
+
 // Fonctions d'initialisation de matrice inférieure
 void init_matL (matL A);
 // Fonction d'initialisation dematrice diagonale
