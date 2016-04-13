@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include <smmintrin.h>
+#include <nmmintrin.h>
+#include <xmmintrin.h>
 
 #include "resolution_v.c"
 

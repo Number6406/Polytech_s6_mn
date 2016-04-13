@@ -9,33 +9,32 @@
 #define N 1024
 #define ITER 1000
 
+//Vectorisation de floats alignés sur 16 octets (4 float de 32 bits donc)
 typedef float vectf [N]  __attribute__ ((aligned (16))) ;
 
-/**
- * Définition des différents types de matrices utilisés dans ce programme :
- * - Matrice diagonale
- * - Matrice
- */
-// Matrice
+//Type de matrice permettant de caractériser : et les matrice inf et les matrice sup
 typedef vectf mat[N];
 
 
-/** Fonction renvoyant un entier aléatoire*/
+/** Fonction renvoyant un entier aléatoire compris entre BORNEINF et BORNESUP*/
 float rand_b(){
 	return ((float) (rand()%((BORNESUP)-BORNEINF+1) + BORNEINF));
 }
+
 /**
  * Fonctions d'initialisation des matrices utilisées pour la résolution de systéme linéaire.
  */
+//Initialisation à 0.0 de toutes les cellules de la matrice
 void init_mat(mat M) {
 	register unsigned int i, j;
-	for(i=0; i<N; i++) {
-		for(j=0; j<N; j++) {
+	for(i=0; i<N; i++) { //Boucle pour toutes les lignes
+		for(j=0; j<N; j++) { //Pour toutes les colonnes
 			M[i][j] = 0.0;
 		}
 	}
 }
 
+// Initialisation aléatoire pour une matrice carré (complète)
 void init_matC(mat M) {
 	register unsigned int i, j;
 	srand(time(NULL));
@@ -46,7 +45,7 @@ void init_matC(mat M) {
 	}
 }
 
- // Fonctions d'initialisation de matrice inférieure, aléatoirement
+// Initialisation de matrice inférieure, aléatoirement
 void init_matInf (mat M) {
 	init_mat(M);
 	register unsigned int i, j;
@@ -58,7 +57,7 @@ void init_matInf (mat M) {
 	}
 }
 
-// Fonctions d'initialisation de matrice supérieure, aléatoirement
+// Initialisation de matrice supérieure, aléatoirement
 void init_matSup (mat M) {
  init_mat(M);
  register unsigned int i, j;
@@ -70,7 +69,7 @@ void init_matSup (mat M) {
  }
 }
 
-// Fonction d'initialisation de vecteur, et donc de matrice diagonale, aléatoirement
+// Initialisation de vecteur, aléatoirement
 void init_vectf (vectf V) {
   register unsigned int i ;
 	srand(time(NULL));
@@ -81,7 +80,7 @@ void init_vectf (vectf V) {
 /**
  * Fonctions d'affichage
  */
-// Fonctions d'affichage de matrices supérieures
+// Fonctions d'affichage de matrice
 void aff_mat (mat M) {
 	register unsigned int i, j ;
 	for (i = 0; i < N; i++){
@@ -115,7 +114,7 @@ void resolutionInf (mat M, vectf B, vectf Res) {
 	int i, j;
 	int somme;
 
-	__m128 v1, v2, v3, v4, v5;
+	__m128 v1, v2, v3, v4, v5; 
 
 	for(i=0; i<N; i++) {
 		somme = 0;
@@ -123,7 +122,7 @@ void resolutionInf (mat M, vectf B, vectf Res) {
 			v1 = _mm_load_ps (M[i]+j) ;
 			v2 = _mm_load_ps (B+j) ;
 			v3 = _mm_load_ps(Res+j);
-			v4 = _mm_mul_ps(v1,v3);
+      v4 = _mm_mul_ps(v1,v3);
 
 			v5 = _mm_dp_ps(v4,v2, 0xFF);
 
