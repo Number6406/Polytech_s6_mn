@@ -2,8 +2,7 @@
 #include <limits.h>
 
 #include <stdio.h>
-#include <nmmintrin.h>
-#include <xmmintrin.h>
+#include <smmintrin.h>
 
 #define N 8
 #define ITER 8000

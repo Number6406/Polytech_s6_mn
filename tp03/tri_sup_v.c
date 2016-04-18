@@ -17,10 +17,12 @@ int main(int argc, char const *argv[]) {
 		init_matSup(U);
 
 		resolutionSup(U,B,X);
-
+		
+		#ifdef AFFICHAGE
 		printf("A :\n"); aff_mat(U);
 		printf("B : "); aff_vectf(B);
 		printf("X :"); aff_vectf(X);
+		#endif
 	}
 	return 0;
 }

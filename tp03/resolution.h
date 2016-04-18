@@ -2,7 +2,7 @@
 
 #define BORNEINF 0
 #define BORNESUP 20
-#define AFFICHAGE
+//#define AFFICHAGE
 
 #define N 1024
 #define ITER 1000
