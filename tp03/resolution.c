@@ -155,7 +155,7 @@ void aff_matd(matd V) {
 // Fonction d'affichage de vecteur
 void aff_vect (vect V){
 	unsigned register int i;
-	printf("[ %4.2f ",V[0]); 
+	printf("[ %4.2f ",V[0]);
 	for(i = 1; i < N; i++){
 		printf("| %4.2f ",V[i]);
 	}
@@ -202,11 +202,11 @@ void resolutionL (matL M, vect B, vect X) {
 //Résolution avec des matrices supérieures
 void resolutionU (matU M, vect B, vect X) {
 	int i, j;
-
-	X[N] = B[N] / M[N][N];
-	for(i=N-1; i>=0; i--) {
+	X[N-1] = B[N-1] / (M[N-1][0]);
+	for(i=0; i<N-1; i++) {
 		X[i] = B[i];
-		for(j=i+1; j<N; j++) {
+		for(j=0; j<N-i+1; j++) {
+			printf("M[%d][%d]*B[%d]\n",i,j,j);
 				X[i] -= (M[i][j]*B[j]);
 		}
 		X[i] = X[i] / M[i][i];
